@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import "./Dashboard.css";
+import AddModal from "./AddModal";
 export default class Dashboard extends Component {
+  state = {
+    activeId: 0,
+  };
   render() {
     return (
       <div className="container">
@@ -36,7 +40,18 @@ export default class Dashboard extends Component {
                   <td>City</td>
                   <td>India</td>
                   <td>
-                    <button className="btn black">Mark Update</button>&nbsp;
+                    <button
+                      className="btn black modal-trigger"
+                      data-target="modal2"
+                      data-id="1"
+                      onClick={(e) => {
+                        let id = e.target.getAttribute("data-id");
+                        this.setState({ activeId: id });
+                      }}
+                    >
+                      Mark Update
+                    </button>
+                    &nbsp;
                     <button className="btn black">Delete</button>
                   </td>
                 </tr>
@@ -44,6 +59,7 @@ export default class Dashboard extends Component {
             </table>
           </div>
         </div>
+
         {/* Modals */}
         <div id="modal1" className="modal">
           <div className="modal-content">
@@ -138,6 +154,7 @@ export default class Dashboard extends Component {
             </div>
           </div>
         </div>
+        <AddModal id={this.state.activeId} />
       </div>
     );
   }
