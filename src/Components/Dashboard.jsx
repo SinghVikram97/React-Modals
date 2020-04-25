@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import "./Dashboard.css";
-import AddModal from "./AddModal";
 import AddLeadModal from "./AddLeadModal";
 import DeleteModal from "./DeleteModal";
+import MarkModal from "./MarkModal";
 export default class Dashboard extends Component {
   state = {
-    activeId: 0,
+    markId: 0,
     list: [],
     add: true,
     deleteId: 0,
+    communication: "",
   };
   componentDidMount() {
     this.updateList();
@@ -68,12 +69,19 @@ export default class Dashboard extends Component {
                       <td>{`${location_string}`}</td>
                       <td>
                         <button
-                          className="btn black modal-trigger add_lead_modal_btn"
+                          className="btn black modal-trigger update_lead_modal_btn"
                           data-target="modal2"
                           data-id={`${id}`}
                           onClick={(e) => {
                             let id = e.target.getAttribute("data-id");
-                            this.setState({ activeId: id });
+                            let communication = this.state.list.filter(
+                              (lead) => lead.id == id
+                            )[0].communication;
+
+                            this.setState({
+                              markId: id,
+                              communication: communication,
+                            });
                           }}
                         >
                           Mark Update
@@ -101,7 +109,10 @@ export default class Dashboard extends Component {
 
         {/* Modals */}
         <AddLeadModal updateList={this.updateList} />
-        <AddModal id={this.state.activeId} />
+        <MarkModal
+          id={this.state.markId}
+          communication={this.state.communication}
+        />
         <DeleteModal id={this.state.deleteId} updateList={this.updateList} />
       </div>
     );
