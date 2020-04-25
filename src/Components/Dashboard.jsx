@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Dashboard.css";
 import AddModal from "./AddModal";
 import AddLeadModal from "./AddLeadModal";
+import DeleteModal from "./DeleteModal";
 export default class Dashboard extends Component {
   state = {
     activeId: 0,
@@ -77,7 +78,13 @@ export default class Dashboard extends Component {
                           Mark Update
                         </button>
                         &nbsp;
-                        <button className="btn black">Delete</button>
+                        <button
+                          className="btn black modal-trigger"
+                          data-target="modal3"
+                          data-id={`${id}`}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   );
@@ -90,6 +97,7 @@ export default class Dashboard extends Component {
         {/* Modals */}
         <AddLeadModal updateList={this.updateList} />
         <AddModal id={this.state.activeId} />
+        <DeleteModal />
       </div>
     );
   }
