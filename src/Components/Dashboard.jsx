@@ -1,9 +1,28 @@
 import React, { Component } from "react";
 import "./Dashboard.css";
 import AddModal from "./AddModal";
+import AddLeadModal from "./AddLeadModal";
 export default class Dashboard extends Component {
   state = {
     activeId: 0,
+    list: [],
+    add: true,
+  };
+  componentDidMount() {
+    fetch("http://3.235.158.119:4059/api/leads/")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        this.setState({ list: data });
+      });
+  }
+  updateList = () => {
+    fetch("http://3.235.158.119:4059/api/leads/")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        this.setState({ list: data });
+      });
   };
   render() {
     return (
@@ -33,127 +52,48 @@ export default class Dashboard extends Component {
               </thead>
 
               <tbody>
-                <tr>
-                  <td>Nilesh Aggarwal</td>
-                  <td>abc@gmail.com</td>
-                  <td>9871028111</td>
-                  <td>City</td>
-                  <td>India</td>
-                  <td>
-                    <button
-                      className="btn black modal-trigger"
-                      data-target="modal2"
-                      data-id="1"
-                      onClick={(e) => {
-                        let id = e.target.getAttribute("data-id");
-                        this.setState({ activeId: id });
-                      }}
-                    >
-                      Mark Update
-                    </button>
-                    &nbsp;
-                    <button className="btn black">Delete</button>
-                  </td>
-                </tr>
+                {this.state.list.map((lead) => {
+                  const {
+                    first_name,
+                    last_name,
+                    mobile,
+                    email,
+                    location_type,
+                    location_string,
+                    id,
+                  } = lead;
+                  return (
+                    <tr>
+                      <td>{`${first_name} ${last_name}`}</td>
+                      <td>{`${email}`}</td>
+                      <td>{`${mobile}`}</td>
+                      <td>{`${location_type}`}</td>
+                      <td>{`${location_string}`}</td>
+                      <td>
+                        <button
+                          className="btn black modal-trigger"
+                          data-target="modal2"
+                          data-id={`${id}`}
+                          onClick={(e) => {
+                            let id = e.target.getAttribute("data-id");
+                            this.setState({ activeId: id });
+                          }}
+                        >
+                          Mark Update
+                        </button>
+                        &nbsp;
+                        <button className="btn black">Delete</button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
 
         {/* Modals */}
-        <div id="modal1" className="modal">
-          <div className="modal-content">
-            <h4 className="white-text black" style={{ padding: "1%" }}>
-              Add Lead
-            </h4>
-            <div className="row" style={{ marginTop: "5%" }}>
-              <form method="get" action="/form" className="col s12">
-                <div className="row">
-                  <div className="input-field col s6">
-                    <input
-                      id="first_name"
-                      type="text"
-                      className="validate"
-                      required
-                      name="first_name"
-                    />
-                    <label htmlFor="first_name">First Name</label>
-                  </div>
-                  <div className="input-field col s6">
-                    <input
-                      id="last_name"
-                      type="text"
-                      name="last_name"
-                      className="validate"
-                      required
-                    />
-                    <label htmlFor="last_name">Last Name</label>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="input-field col s6">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      className="validate"
-                      required
-                    />
-                    <label htmlFor="email">Email</label>
-                  </div>
-                  <div className="input-field col s6">
-                    <input
-                      name="mobile"
-                      id="mobile"
-                      type="tel"
-                      className="validate"
-                      required
-                    />
-                    <label htmlFor="mobile">Mobile</label>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="input-field col s6">
-                    <select
-                      // className="browser-default"
-                      id="location_type"
-                      className="validate"
-                      required
-                      name="location_type"
-                    >
-                      <option value="" disabled selected id="default_option">
-                        Location Type
-                      </option>
-                      <option value="1" className="black">
-                        Country
-                      </option>
-                      <option value="2">State</option>
-                      <option value="3">City</option>
-                    </select>
-                  </div>
-                  <div className="input-field col s6">
-                    <input
-                      name="location_string"
-                      id="location_string"
-                      type="text"
-                      className="validate"
-                      required
-                    />
-                    <label htmlFor="location_string">Location String</label>
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <button
-                    onClick={() => console.log("hi")}
-                    className="modal-close waves-effect waves-green btn-flat"
-                  >
-                    ADD
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <AddLeadModal updateList={this.updateList} />
         <AddModal id={this.state.activeId} />
       </div>
     );
