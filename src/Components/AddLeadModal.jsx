@@ -66,7 +66,7 @@ export default class AddLeadModal extends Component {
       location_string: location_string,
       location_type: location_type,
     };
-    fetch("http://18.209.209.196:4059/api/leads/", {
+    fetch("http://3.219.31.158:4059/api/leads/", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -103,7 +103,7 @@ export default class AddLeadModal extends Component {
             Add Lead
           </h4>
           <div className="row" style={{ marginTop: "5%" }}>
-            <form className="col s12">
+            <form className="col s12 add_lead_form">
               <div className="row">
                 <div className="input-field col s6">
                   <input
@@ -184,7 +184,7 @@ export default class AddLeadModal extends Component {
                     this.handleSubmit();
                   }}
                   disabled={this.state.disabled}
-                  className="modal-close waves-effect btn-flat"
+                  className="modal-close waves-effect btn-flat add_lead_btn"
                 >
                   ADD
                 </button>

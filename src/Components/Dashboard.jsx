@@ -8,12 +8,13 @@ export default class Dashboard extends Component {
     activeId: 0,
     list: [],
     add: true,
+    deleteId: 0,
   };
   componentDidMount() {
     this.updateList();
   }
   updateList = () => {
-    fetch("http://18.209.209.196:4059/api/leads/")
+    fetch("http://3.219.31.158:4059/api/leads/")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -67,7 +68,7 @@ export default class Dashboard extends Component {
                       <td>{`${location_string}`}</td>
                       <td>
                         <button
-                          className="btn black modal-trigger"
+                          className="btn black modal-trigger add_lead_modal_btn"
                           data-target="modal2"
                           data-id={`${id}`}
                           onClick={(e) => {
@@ -79,9 +80,13 @@ export default class Dashboard extends Component {
                         </button>
                         &nbsp;
                         <button
-                          className="btn black modal-trigger"
+                          className="btn black modal-trigger delete_lead_modal_btn"
                           data-target="modal3"
                           data-id={`${id}`}
+                          onClick={(e) => {
+                            let id = e.target.getAttribute("data-id");
+                            this.setState({ deleteId: id });
+                          }}
                         >
                           Delete
                         </button>
@@ -97,7 +102,7 @@ export default class Dashboard extends Component {
         {/* Modals */}
         <AddLeadModal updateList={this.updateList} />
         <AddModal id={this.state.activeId} />
-        <DeleteModal />
+        <DeleteModal id={this.state.deleteId} updateList={this.updateList} />
       </div>
     );
   }
