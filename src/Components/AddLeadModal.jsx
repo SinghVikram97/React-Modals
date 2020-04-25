@@ -21,24 +21,30 @@ export default class AddLeadModal extends Component {
         location_string,
         location_type,
       } = this.state;
-      if (
-        first_name &&
-        last_name &&
-        email &&
-        mobile &&
-        location_string &&
-        location_type
-      ) {
-        this.setState({
+      this.setState(
+        {
           first_name,
           last_name,
           email,
           mobile,
           location_string,
           location_type,
-          disabled: false,
-        });
-      }
+        },
+        () => {
+          if (
+            first_name &&
+            last_name &&
+            email &&
+            mobile &&
+            location_string &&
+            location_type
+          ) {
+            this.setState({ disabled: false });
+          } else {
+            this.setState({ disabled: true });
+          }
+        }
+      );
     });
   };
 
@@ -60,7 +66,7 @@ export default class AddLeadModal extends Component {
       location_string: location_string,
       location_type: location_type,
     };
-    fetch("http://3.235.158.119:4059/api/leads/", {
+    fetch("http://18.209.209.196:4059/api/leads/", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -71,7 +77,19 @@ export default class AddLeadModal extends Component {
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
-        this.props.updateList();
+        this.setState(
+          {
+            first_name: "",
+            last_name: "",
+            email: "",
+            mobile: "",
+            location_string: "",
+            disabled: true,
+          },
+          () => {
+            this.props.updateList();
+          }
+        );
       })
       .catch((err) => {
         console.log(err);

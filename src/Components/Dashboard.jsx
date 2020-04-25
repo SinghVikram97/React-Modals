@@ -9,15 +9,10 @@ export default class Dashboard extends Component {
     add: true,
   };
   componentDidMount() {
-    fetch("http://3.235.158.119:4059/api/leads/")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        this.setState({ list: data });
-      });
+    this.updateList();
   }
   updateList = () => {
-    fetch("http://3.235.158.119:4059/api/leads/")
+    fetch("http://18.209.209.196:4059/api/leads/")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
