@@ -3,6 +3,7 @@ import "./Dashboard.css";
 import AddLeadModal from "./AddLeadModal";
 import DeleteModal from "./DeleteModal";
 import MarkModal from "./MarkModal";
+import URL from "../URL";
 export default class Dashboard extends Component {
   state = {
     markId: 0,
@@ -15,7 +16,7 @@ export default class Dashboard extends Component {
     this.updateList();
   }
   updateList = () => {
-    fetch("http://3.219.31.158:4059/api/leads/")
+    fetch(`${URL}/api/leads/`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -61,7 +62,7 @@ export default class Dashboard extends Component {
                     id,
                   } = lead;
                   return (
-                    <tr>
+                    <tr key={`${id}`}>
                       <td>{`${first_name} ${last_name}`}</td>
                       <td>{`${email}`}</td>
                       <td>{`${mobile}`}</td>
@@ -112,6 +113,7 @@ export default class Dashboard extends Component {
         <MarkModal
           id={this.state.markId}
           communication={this.state.communication}
+          updateList={this.updateList}
         />
         <DeleteModal id={this.state.deleteId} updateList={this.updateList} />
       </div>

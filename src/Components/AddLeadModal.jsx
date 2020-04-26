@@ -1,5 +1,6 @@
-import React, { Component, createRef } from "react";
-import Axios from "axios";
+import React, { Component } from "react";
+
+import URL from "../URL";
 export default class AddLeadModal extends Component {
   state = {
     first_name: "",
@@ -66,7 +67,7 @@ export default class AddLeadModal extends Component {
       location_string: location_string,
       location_type: location_type,
     };
-    fetch("http://3.219.31.158:4059/api/leads/", {
+    fetch(`${URL}/api/leads/`, {
       method: "post",
       headers: {
         Accept: "application/json",
