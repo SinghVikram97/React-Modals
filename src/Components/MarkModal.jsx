@@ -20,7 +20,12 @@ export default class MarkModal extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({ value: this.props.communication });
     // this.setState({ value: "" });
+  };
+
+  handleMouseDown = (e) => {
+    this.setState({ value: "" });
   };
 
   handleFormSave = (e) => {
@@ -72,6 +77,7 @@ export default class MarkModal extends Component {
                   onChange={this.handleChange}
                   value={this.state.value || ""}
                   name="communication"
+                  onMouseDownCapture={this.handleMouseDown}
                 ></textarea>
 
                 <button
